@@ -30,6 +30,7 @@ app.post('/api/upload', function(req, res) {
 
 app.use(express.static(path.join(__dirname, 'uploads')));
 
-app.listen(80, function() {
-    console.log("Working on port 80");
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+    console.log("Working on port :" + port);
 });
