@@ -1,6 +1,7 @@
 var express = require("express");
 var multer = require('multer');
 var path = require('path');
+var fs = require('fs-extra');
 var app = express();
 var storage = multer.diskStorage({
     destination: function(req, file, callback) {
