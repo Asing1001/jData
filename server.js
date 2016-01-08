@@ -3,15 +3,22 @@ var multer = require('multer');
 var path = require('path');
 var fs = require('fs-extra');
 var app = express();
-var storage = multer.diskStorage({
+var uploadFolderPath = './uploads';
+var storage = multer.diskStorage({    
     destination: function(req, file, callback) {
-        callback(null, './uploads');
+        callback(null, uploadFolderPath);
     },
     filename: function(req, file, callback) {
         console.log('receive file :' + JSON.stringify(file));
         callback(null, file.originalname);
     }
 });
+
+fs.ensureDir(uploadFolderPath, function (err) {
+  console.log(err) // => null
+  // dir has now been created, including the directory it is to be placed in
+})
+
 var upload = multer({
     storage: storage
 }).single('uploadFile');
