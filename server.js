@@ -22,6 +22,7 @@ fs.ensureDir(uploadFolderPath, function(err) {
 
 var upload = multer({
   storage: storage,
+  limits : { fileSize: 1* 1024 * 1024},
 }).single('uploadFile');
 
 app.get('/', function(req, res) {
@@ -31,14 +32,30 @@ app.get('/', function(req, res) {
 app.post('/api/upload', function(req, res) {
   upload(req, res, function(err) {
     if (err) {
-      return res.end('Error uploading file. Error: ' + err);
+      return res.end('Error uploading file. ' + err);
     }
 
     res.end('File is uploaded');
   });
 });
 
+app.get('/list', function(req,res){
+  var items = [];
+  var reg = new RegExp(/uploads$/g);
+  fs.walk(uploadFolderPath)
+      .on('data', function (item) {
+        if(!reg.test(item.path))
+        items.push(item.path)
+      })
+      .on('end', function () {
+        res.json(items) // => [ ... array of files]
+      })
+});
+
 app.use(express.static(path.join(__dirname, 'uploads')));
+app.use('/scripts',express.static(path.join(__dirname, '/scripts')));
+app.use('/bower_components',express.static(path.join(__dirname, '/bower_components')));
+
 
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
