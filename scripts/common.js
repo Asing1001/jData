@@ -12,6 +12,18 @@ fetch('/list')
     })
 })
 
+var maxSize = 5*1024*1024;
+$('input[name="uploadFile"]').bind('change', function() {
+
+    //this.files[0].size gets the size of your file.
+    if(this.files[0].size>maxSize){
+        alert("File should not exceed 5 MB!!");
+        $('#uploadBtn').attr('disabled',true);
+    }else {
+        $('#uploadBtn').removeAttr('disabled');
+    }
+});
+
 
 String.prototype.format = function() {
     var args = arguments;

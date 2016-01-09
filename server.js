@@ -20,9 +20,10 @@ fs.ensureDir(uploadFolderPath, function(err) {
   // dir has now been created, including the directory it is to be placed in
 });
 
+var maxSize = 5* 1024 * 1024;
 var upload = multer({
   storage: storage,
-  limits : { fileSize: 1* 1024 * 1024},
+  limits : { fileSize: maxSize},
 }).single('uploadFile');
 
 app.get('/', function(req, res) {
