@@ -2,6 +2,7 @@
   "name": "file_upload",
   "version": "0.0.1",
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "4.13.3",
     "fs-extra": "^0.26.4",
     "multer": "1.1.0"

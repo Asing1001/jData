@@ -2,6 +2,8 @@ var express = require('express');
 var multer = require('multer');
 var path = require('path');
 var fs = require('fs-extra');
+var cors = require('cors');
+
 var app = express();
 var uploadFolderPath = './uploads';
 var storage = multer.diskStorage({
@@ -31,13 +33,15 @@ app.get('/', function (req, res) {
 });
 
 app.post('/api/upload', function (req, res) {
+
     upload(req, res, function (err) {
         if (err) {
             return res.end('Error uploading file. ' + err);
         }
 
-        res.end('File is uploaded');
+        //res.end('File is uploaded');
     });
+    res.json(req.files);
 });
 
 app.get('/list', function (req, res) {
@@ -53,6 +57,21 @@ app.get('/list', function (req, res) {
         })
 });
 
+app.get('/edit/:fileName', function (req, res) {
+    res.sendFile(__dirname + '/editFile.html');
+});
+
+app.put('/', function (req, res) {
+    try{
+        fs.write();
+        res.send('PUT request to homepage');
+    }
+    catch(err){
+        res.send('Error:' + err);
+    }
+});
+
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
