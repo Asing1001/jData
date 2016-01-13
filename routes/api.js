@@ -47,9 +47,9 @@ router.route('/files/:fileName')
         var content = JSON.stringify(req.body);
         fsExtra.outputFile(filePath, content, function (err) {
             if (!err) {
-                res.send('success edit!');
+                res.end('success edit!');
             } else {
-                res.send('Error:' + err);
+                res.end('Error:' + err);
             }
         });
     });

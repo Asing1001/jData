@@ -6,8 +6,8 @@ fetch('/api/files')
         return response.json();
     }).then(function (fileArray) {
     fileArray.forEach(function (filePath) {
-        var fileName = filePath.substr(filePath.lastIndexOf('\\'));
-        var a = $('<a href="{0}">{0}</a><br/>'.format(fileName));
+        var fileName = filePath.substr(filePath.lastIndexOf('\\')+1);
+        var a = $('<a href="/edit/{0}">{0}</a><br/>'.format(fileName));
         $('#listContainer').append(a);
     })
 })
