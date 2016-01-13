@@ -20,7 +20,7 @@ fetch(originUrl).then(function (res) {
     }
 }).then(function (data) {
     console.log(data);
-    textArea.textContent = JSON.stringify(data);
+    textArea.textContent = JSON.stringify(data, undefined, 2);
 });
 
 btn.onclick = function (e) {
