@@ -52,6 +52,19 @@ router.route('/files/:fileName')
                 res.end('Error:' + err);
             }
         });
+    })
+    .delete(function (req, res) {
+        var filePath = uploadFolderPath + req.params.fileName;
+        var pwd = req.body.pwd;
+        var canDelete =  pwd === 'pass.123';
+        if(!canDelete){res.end('you cant use delete function!');}
+        fsExtra.remove(filePath, function (err) {
+            if (!err) {
+                res.end('success delete file !');
+            } else {
+                res.end('Error:' + err);
+            }
+        });
     });
 
 router.route('/files')
