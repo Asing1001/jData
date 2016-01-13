@@ -3,7 +3,7 @@
  */
 var fileName = location.href.substring(location.href.lastIndexOf('/') + 1,location.href.length);
 var originUrl = location.origin + "/" + fileName;
-var putUrl = location.origin + '/api/files/filename';
+var putUrl = location.origin + '/api/files/'+fileName;
 var textArea = document.createElement('textarea');
 textArea.setAttribute('rows',"30");
 textArea.setAttribute('cols','50');
@@ -25,13 +25,10 @@ fetch(originUrl).then(function(res){
 
 btn.onclick = function(e){
     var jsonArr;
-    var json
+    var json;
     try{
-        var contextArr = JSON.parse("[" + textArea.textContent + "]");
-        json = [{
-            filename: fileName,
-            content: contextArr
-        }];
+        var contextArr = JSON.parse(textArea.value);
+        json = textArea.value;
     }
     catch(e){
         alert("json format error");
@@ -42,7 +39,7 @@ btn.onclick = function(e){
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(json)
+        body: json
     }).then(function(res){if(res.ok){
         alert('Put OK');
         textArea.textContent = "";

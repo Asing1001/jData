@@ -5,6 +5,7 @@ var fs = require('fs');
 var cors = require('cors');
 var app = express();
 var uploadFolderPath = __dirname + '\\uploads\\';
+var bodyParser = require('body-parser');
 
 
 app.get('/', function (req, res) {
@@ -14,6 +15,12 @@ app.get('/edit/:fileName', function (req, res) {
         res.sendFile(__dirname + '/editFile.html');
     }
 );
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}));
+
+// parse application/json
+app.use(bodyParser.json());
 app.use(cors());
 app.use('/api', require('./routes/api'));
 app.use(express.static(uploadFolderPath));

@@ -44,8 +44,9 @@ router.route('/files/:fileName')
         });
     })
     .put(function (req, res) {
-        var filePath =   uploadFolderPath +req.params.filename;
-        fsExtra.outputFile(filePath, req.params.content, function (err) {
+        var filePath =   uploadFolderPath +req.params.fileName;
+        var content = JSON.stringify(req.body);
+        fsExtra.outputFile(filePath, content, function (err) {
             if (!err) {
                 res.send('success edit!');
             } else {
