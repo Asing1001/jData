@@ -28,50 +28,51 @@ var upload = multer({
     limits: {fileSize: maxSize},
 }).single('uploadFile');
 
+
+var router = express.Router();
+router.route('/files/:fileName')
+    .get(function (req, res) {
+        res.sendFile(__dirname + '/editFile.html');
+    })
+    .put(function (req, res) {
+        try {
+            //fs.write();
+            res.send('PUT request to homepage');
+        }
+        catch (err) {
+            res.send('Error:' + err);
+        }
+    });
+
+router.route('/files')
+    .get(function (req, res) {
+        var items = [];
+        var reg = new RegExp(/uploads$/g);
+        fs.walk(uploadFolderPath)
+            .on('data', function (item) {
+                if (!reg.test(item.path))
+                    items.push(item.path)
+            })
+            .on('end', function () {
+                res.json(items); // => [ ... array of files]
+            })
+    })
+    .post(function (req, res) {
+
+        upload(req, res, function (err) {
+            if (err) {
+                return res.end('Error uploading file. ' + err);
+            }
+
+            res.end('File is uploaded');
+        });
+    });
+
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
-app.post('/api/upload', function (req, res) {
-
-    upload(req, res, function (err) {
-        if (err) {
-            return res.end('Error uploading file. ' + err);
-        }
-
-        //res.end('File is uploaded');
-    });
-    res.json(req.files);
-});
-
-app.get('/list', function (req, res) {
-    var items = [];
-    var reg = new RegExp(/uploads$/g);
-    fs.walk(uploadFolderPath)
-        .on('data', function (item) {
-            if (!reg.test(item.path))
-                items.push(item.path)
-        })
-        .on('end', function () {
-            res.json(items) // => [ ... array of files]
-        })
-});
-
-app.get('/edit/:fileName', function (req, res) {
-    res.sendFile(__dirname + '/editFile.html');
-});
-
-app.put('/', function (req, res) {
-    try{
-        fs.write();
-        res.send('PUT request to homepage');
-    }
-    catch(err){
-        res.send('Error:' + err);
-    }
-});
-
 app.use(cors());
+app.use('/api', router);
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));

@@ -1,7 +1,7 @@
 /**
  * Created by Andy on 2016/1/14.
  */
-fetch('/list')
+fetch('/api/files')
     .then(function(response) {
         return response.json();
     }).then(function (fileArray) {
