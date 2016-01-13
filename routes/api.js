@@ -6,8 +6,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var path = require('path');
-var appDir = path.dirname(require.main.filename);
-var uploadFolderPath = appDir + '\\uploads\\';
+var uploadFolderPath = global.appRoot + '\\uploads\\';
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -44,7 +43,7 @@ router.route('/files/:fileName')
         });
     })
     .put(function (req, res) {
-        var filePath =   uploadFolderPath +req.params.fileName;
+        var filePath = uploadFolderPath + req.params.fileName;
         var content = JSON.stringify(req.body);
         fsExtra.outputFile(filePath, content, function (err) {
             if (!err) {
@@ -78,7 +77,6 @@ router.route('/files')
             res.end('File is uploaded');
         });
     });
-
 
 
 module.exports = router;

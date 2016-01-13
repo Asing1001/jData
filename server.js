@@ -6,6 +6,7 @@ var cors = require('cors');
 var app = express();
 var uploadFolderPath = __dirname + '\\uploads\\';
 var bodyParser = require('body-parser');
+global.appRoot = __dirname;
 
 
 app.get('/', function (req, res) {
