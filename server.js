@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes/api/files'));
 app.use(express.static(uploadFolderPath));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
