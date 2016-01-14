@@ -1,4 +1,27 @@
-<form id="uploadForm" enctype="multipart/form-data" action="/api/upload" method="post">
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JDATA</title>
+</head>
+<body>
+
+<form id="uploadForm" enctype="multipart/form-data" action="/api/files" method="post">
     <input type="file" name="uploadFile" />
-    <input type="submit" name="submit">
+    <input id="uploadBtn" type="submit" name="submit" disabled>
+    <span>檔案大小必須小於5MB</span>
 </form>
+
+
+<p> Current file List : </p>
+<div id="listContainer">
+</div>
+
+
+<script src="/scripts/jquery.min.js"></script>
+<script src="/scripts/common.js"></script>
+<script src="/scripts/index.js"></script>
+</body>
+</html>
