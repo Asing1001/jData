@@ -34,6 +34,7 @@ btn.onclick = function (e) {
         alert("json format error");
         return;
     }
+    console.log('changed json object', contextArr);
     fetch(putUrl, {
         method: "PUT",
         headers: {
