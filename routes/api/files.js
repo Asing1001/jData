@@ -35,6 +35,7 @@ router.route('/files/:fileName')
       var filePath = uploadFolderPath + req.params.fileName;
       fs.access(filePath, fs.F_OK, function(err) {
           if (!err) {
+              res.setHeader('Content-Type', 'application/json');
           res.sendFile(filePath);
         } else {
           res.end('there is no such file!');

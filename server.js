@@ -24,10 +24,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api', require('./routes/api/files'));
-app.use(function (req, res) {
-    res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    express.static(uploadFolderPath)
-});
+app.use(express.static(uploadFolderPath));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 
