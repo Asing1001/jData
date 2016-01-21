@@ -20,23 +20,30 @@ var storage = multer.diskStorage({
 });
 
 fsExtra.ensureDir(uploadFolderPath, function(err) {
-  console.log(err); // => null
-  // dir has now been created, including the directory it is to be placed in
+    if(err){
+        console.log(err);
+    }
 });
 
 var maxSize = 5 * 1024 * 1024;
 var upload = multer({
   storage: storage,
-  limits: {fileSize: maxSize},
+  limits: {
+    fileSize: maxSize,
+  },
 }).single('uploadFile');
 
 router.route('/files/:fileName')
     .get(function(req, res) {
       var filePath = uploadFolderPath + req.params.fileName;
+      var options = {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      };
       fs.access(filePath, fs.F_OK, function(err) {
-          if (!err) {
-              res.setHeader('Content-Type', 'application/json; charset=utf-8');
-          res.sendFile(filePath);
+        if (!err) {
+          res.sendFile(filePath,options);
         } else {
           res.end('there is no such file!');
         }
@@ -45,7 +52,7 @@ router.route('/files/:fileName')
     .put(function(req, res) {
       var filePath = uploadFolderPath + req.params.fileName;
       var content = JSON.stringify(req.body);
-      fsExtra.outputFile(filePath, content, function(err) {
+      fsExtra.outputFile(filePath, content, 'utf8', function(err) {
         if (!err) {
           res.end('success edit!');
         } else {
@@ -56,8 +63,10 @@ router.route('/files/:fileName')
     .delete(function(req, res) {
       var filePath = uploadFolderPath + req.params.fileName;
       var pwd = req.body.pwd;
-      var canDelete =  pwd === 'pass.123';
-      if (!canDelete) {res.end('you cant use delete function!');}
+      var canDelete = pwd === 'pass.123';
+      if (!canDelete) {
+        res.end('you cant use delete function!');
+      }
 
       fsExtra.remove(filePath, function(err) {
         if (!err) {
