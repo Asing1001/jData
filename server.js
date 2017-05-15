@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // parse application/json
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 app.use(cors());
 app.use('/api', require('./routes/api/files'));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));

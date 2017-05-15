@@ -3,48 +3,58 @@
  */
 var fileName = location.href.substring(location.href.lastIndexOf('/') + 1, location.href.length);
 var originUrl = location.origin + "/" + fileName;
-var putUrl = location.origin + '/api/files/' + fileName;
+
 var textArea = document.createElement('textarea');
 textArea.setAttribute('rows', "30");
 textArea.setAttribute('cols', '100');
 textArea.style.border = "1px solid black";
-//textArea.style.display = "none";
-var btn = document.createElement('button');
-btn.textContent = "Save";
-//btn.style.display = "none";
-document.body.appendChild(textArea);
-document.body.appendChild(btn);
-fetch(originUrl).then(function (res) {
-    if (res.ok) {
-        return res.json();
-    }
-}).then(function (data) {
-    console.log(data);
-    textArea.textContent = JSON.stringify(data, undefined, 2);
-});
 
-btn.onclick = function (e) {
-    var jsonArr;
-    var json;
-    try {
-        var contextArr = JSON.parse(textArea.value);
-        json = textArea.value;
-    }
-    catch (e) {
-        alert("json format error");
-        return;
-    }
-    console.log('changed json object', contextArr);
-    fetch(putUrl, {
+var btnSave = document.createElement('button');
+btnSave.textContent = "Save";
+btnSave.onclick = function(e) {
+    fetch(location.origin + '/api/files/' + fileName, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "text/plain"
         },
-        body: json
-    }).then(function (res) {
+        body: textArea.value
+    }).then(function(res) {
         if (res.ok) {
-            alert('success update!!');
+            alert("update success!");
         }
     });
-
 }
+
+var div = document.createElement('div');
+div.textContent = `fileLocation:`;
+
+var copyTextarea = document.createElement('textarea');
+copyTextarea.textContent = `${originUrl}`;
+copyTextarea.style.width = '500px';
+
+var btnCopy = document.createElement('button');
+btnCopy.textContent = "Copy";
+btnCopy.onclick = () => {
+    copyTextarea.select();
+    document.execCommand('copy');
+}
+
+document.body.appendChild(textArea);
+document.body.appendChild(btnSave);
+document.body.appendChild(div);
+document.body.appendChild(copyTextarea);
+document.body.appendChild(btnCopy);
+
+fetch(originUrl).then(function(res) {
+    if (res.ok) {
+        return res.text();
+    }
+}).then(function(data) {
+    console.log(data);
+    try {
+        textArea.textContent = JSON.stringify(JSON.parse(data), undefined, 2);
+    } catch (ex) {
+        console.error(ex);
+        textArea.textContent = data;
+    }
+});

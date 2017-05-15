@@ -51,7 +51,7 @@ router.route('/files/:fileName')
     })
     .put(function(req, res) {
       var filePath = uploadFolderPath + req.params.fileName;
-      var content = JSON.stringify(req.body);
+      var content = req.body;
         fs.writeFile(filePath, content, 'utf8', function(err) {
         if (!err) {
           res.end('success edit!');
