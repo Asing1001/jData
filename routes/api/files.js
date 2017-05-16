@@ -45,7 +45,7 @@ router.route('/files/:fileName')
             if (!err) {
                 res.sendFile(filePath, options);
             } else {
-                res.end('there is no such file!');
+                res.status(400).end('there is no such file!');
             }
         });
     })

@@ -7,12 +7,15 @@ fetch('/api/files')
     }).then(function(fileArray) {
         fileArray.forEach(function(filePath) {
             var fileName = filePath.substr(filePath.lastIndexOf('\\') + 1);
-            var a = $(`<a href="/${fileName}">${fileName}</a>`);
-            var editLink = $(`<a style="margin-left:10px" href="/edit/${fileName}">Edit</a>`);
-            var deleteBtn = $(`<button class="deleteBtn" type="button" data-file-name="${fileName}">Delete</button><br/>`);
-            $('#listContainer').append(a);
-            $('#listContainer').append(editLink);
-            $('#listContainer').append(deleteBtn);
+            var li = document.createElement('li');
+            var a = $(`<a href="/api/files/${fileName}">${fileName}</a>`);
+            var editLink = $(`<a class="button small" href="/edit/${fileName}">Edit</a>`);
+            var deleteBtn = $(`<button class="deleteBtn small" type="button" data-file-name="${fileName}">Delete</button>`);
+
+            $(li).append(a);
+            $(li).append(editLink);
+            $(li).append(deleteBtn);
+            $('#listContainer').append(li);
         })
     })
 

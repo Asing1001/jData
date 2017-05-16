@@ -29,7 +29,6 @@ app.use('/api', require('./routes/api/files'));
 app.use('/scripts', express.static(path.join(__dirname, '/scripts')));
 app.use('/bower_components', express.static(path.join(__dirname, '/bower_components')));
 app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
-app.use(express.static(uploadFolderPath));
 
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
