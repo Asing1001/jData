@@ -36,14 +36,9 @@ var upload = multer({
 router.route('/files/:fileName')
     .get(function(req, res) {
         var filePath = uploadFolderPath + req.params.fileName;
-        var options = {
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-            },
-        };
         fs.access(filePath, fs.F_OK, function(err) {
             if (!err) {
-                res.sendFile(filePath, options);
+                res.sendFile(filePath);
             } else {
                 res.status(400).end('there is no such file!');
             }
